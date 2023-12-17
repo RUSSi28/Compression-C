@@ -4,6 +4,7 @@
 //リストの長さを保持
 int length = 0;
 
+
 //runLengthは語の重複を許す
 //huffmanは語の重複を許さない(一文字ずつ構造体で表す)
 struct wordInfo
@@ -20,6 +21,7 @@ struct wordInfo *firstElement = NULL;
 struct wordInfo *refElement = NULL;
 struct wordInfo *hold = NULL;
 struct wordInfo *iteration = NULL;
+
 
 //標準ストリームから受け取った文字列のファイルに対しランレングス法を実行する関数
 struct wordInfo runLength()
@@ -93,18 +95,18 @@ struct wordInfo runLength()
 
 //以下ハフマン法のための関数群
 //ファイル内の文字数を返す
-// int numOfAllWord(char str[FILE_MAX], FILE *fp)
-// {
-//     int total = 0;
-//     int c1;
+int numOfAllWord(char str[FILE_MAX], FILE *fp)
+{
+    int total = 0;
+    int c1;
 
-//     while ((c1 = fgetc(fp)) != EOF)
-//     {
-//         total ++;
-//     }
+    while ((c1 = fgetc(fp)) != EOF)
+    {
+        total ++;
+    }
 
-//     return total;
-// }
+    return total;
+}
 
 
 //文字の出現率を返す
@@ -159,9 +161,6 @@ struct wordInfo huffman()
                 int i = 0;
                 while (i < length)
                 {
-                    printf("aho ");
-                    printf("%c ",(char)c);
-                    printf("%c ",iteration->word);
                     if ((char)c == iteration->word)
                     {
                         iteration->numOfTimes ++;
@@ -181,9 +180,10 @@ struct wordInfo huffman()
                 {
                     printf("new ");
                     printf("%ctest ",iteration->word);//a
+                    printf("%dtest ",iteration->numOfTimes);
                     struct wordInfo nextWordInfo = {
                         length, c, -1, 1, NULL
-                    }; //ここ作った時点でiterationが書き換わる(まるでコピー書き換え)
+                    }; //ここ作った時点でiterationが書き換わる。しかしiterationは書き換えてない
                     length ++;
 
                     printf("%ctest ",iteration->word);//b
@@ -202,6 +202,7 @@ struct wordInfo huffman()
         int i = 0;
         while (i < length)
         {
+            //語ごとに出現確率を表示する
             float wordRate = wordRateOfAll((float)total, (float)(iteration->numOfTimes));
             printf("%s", &iteration->word);
             printf("%f", wordRate);
