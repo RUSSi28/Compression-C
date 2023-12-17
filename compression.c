@@ -119,15 +119,13 @@ struct wordInfo huffman()
     FILE *fpw;
     int total = 0;
     int c; //char型にキャストして使う
-    char str1[FILE_MAX];
+    char str[FILE_MAX];
     int bool = 1; //0, 1でfalse, true 一度出てきた文字か否かを調べる
 
     
     printf("ファイル名を入力して下さい(拡張子を含める)\n");
-    scanf("%s",str1);
-    printf("kuso");
-    fpr = fopen(str1, "r");
-    printf("kuso");
+    scanf("%s",str);
+    fpr = fopen(str, "r");
     while ((c = fgetc(fpr)) != EOF)
     {
         total ++;
@@ -135,18 +133,16 @@ struct wordInfo huffman()
     fclose(fpr);
     
 
-    if (fopen(str1, "r") == NULL)
+    if (fopen(str, "r") == NULL)
     {
         printf("\aファイルをオープンできません");
         
     } else 
     {
-        fpr = fopen(str1, "r");
-        printf("kuso");
+        fpr = fopen(str, "r");
         //ファイル中のそれぞれの文字の出現率を調べ、ハフマン符号をつくる
         while ((c = fgetc(fpr)) != EOF)
         {
-            printf("kuso");
             if (firstElement == NULL)
             {
                 struct wordInfo wi = {
@@ -159,17 +155,19 @@ struct wordInfo huffman()
             {
                 iteration = firstElement;
                 bool = 1;
-                while (iteration != NULL)
+                while (iteration->next != NULL)
                 {
+                    printf("aho");
                     if (iteration->word == (char)c)
                     {
                         iteration->numOfTimes ++;
                         bool = 0;
                         break;
                     }
-                    
-                    iteration = iteration->next;
+                    // iteration = iteration->next;
                 }
+
+
                 //wordInfoのリストをすべて見終わったあとでリストの後部に新しい要素を付け足す
                 if (bool == 1)
                 {
@@ -182,10 +180,11 @@ struct wordInfo huffman()
                 
             }
         }
-        iteration = firstElement;
+        // iteration = firstElement;
         // while (iteration != NULL)
         // {
-        //     float wordRate = wordRateOfAll((float)allWord, (float)(iteration->numOfTimes));
+        //     float wordRate = wordRateOfAll((float)total, (float)(iteration->numOfTimes));
+        //     printf("%s", &iteration->word);
         //     printf("%f", wordRate);
         //     iteration = iteration->next;
         // }
