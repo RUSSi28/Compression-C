@@ -18,6 +18,7 @@ struct wordInfo
 
 struct wordInfo *firstElement = NULL;
 struct wordInfo *refElement = NULL;
+struct wordInfo *hold = NULL;
 struct wordInfo *iteration = NULL;
 
 //標準ストリームから受け取った文字列のファイルに対しランレングス法を実行する関数
@@ -150,44 +151,68 @@ struct wordInfo huffman()
                 };
                 length ++;
                 firstElement = &wi;
-                refElement = &wi;
+                iteration = &wi;
             } else 
             {
                 iteration = firstElement;
                 bool = 1;
-                while (iteration->next != NULL)
+                int i = 0;
+                while (i < length)
                 {
-                    printf("aho");
-                    if (iteration->word == (char)c)
+                    printf("aho ");
+                    printf("%c ",(char)c);
+                    printf("%c ",iteration->word);
+                    if ((char)c == iteration->word)
                     {
                         iteration->numOfTimes ++;
                         bool = 0;
                         break;
                     }
-                    // iteration = iteration->next;
+                    i ++;
+                    if (iteration->next != NULL)
+                    {
+                        iteration = iteration->next;
+                    }      
                 }
 
 
-                //wordInfoのリストをすべて見終わったあとでリストの後部に新しい要素を付け足す
+                //wordInfoのリストに該当なしなら新要素を追加
                 if (bool == 1)
                 {
-                    struct wordInfo wi = {
+                    printf("new ");
+                    printf("%ctest ",iteration->word);//a
+                    struct wordInfo nextWordInfo = {
                         length, c, -1, 1, NULL
-                    };
-                    iteration->next = &wi;
+                    }; //ここ作った時点でiterationが書き換わる(まるでコピー書き換え)
+                    length ++;
+
+                    printf("%ctest ",iteration->word);//b
+                    iteration->next = &nextWordInfo;
+                    printf("%ctest ",iteration->word);//b
                 }
                 
                 
             }
         }
+
+
         // iteration = firstElement;
-        // while (iteration != NULL)
-        // {
-        //     float wordRate = wordRateOfAll((float)total, (float)(iteration->numOfTimes));
-        //     printf("%s", &iteration->word);
-        //     printf("%f", wordRate);
-        //     iteration = iteration->next;
-        // }
+        struct wordInfo k = {10,'w',-1, 1, NULL};
+        iteration = &k;
+        int i = 0;
+        while (i < length)
+        {
+            float wordRate = wordRateOfAll((float)total, (float)(iteration->numOfTimes));
+            printf("%s", &iteration->word);
+            printf("%f", wordRate);
+            printf("%d", total);
+            printf("%d", iteration->numOfTimes);
+            i ++;
+            if (iteration->next != NULL)
+            {
+                iteration = iteration->next;
+            }
+        }
         
         // fpw = fopen("encode.txt", "a");
         // fclose(fpw);
